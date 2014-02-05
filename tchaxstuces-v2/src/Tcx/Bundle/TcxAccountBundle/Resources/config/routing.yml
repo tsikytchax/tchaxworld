@@ -1,0 +1,3 @@
+tcx_account_homepage:
+    pattern:  /tcxaccount
+    defaults: { _controller: TcxAccountBundle:TcxAccount:index }

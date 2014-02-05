@@ -1,0 +1,5 @@
+tcx_account:
+    resource: "@TcxAccountBundle/Controller"
+    type: annotation
+
+
