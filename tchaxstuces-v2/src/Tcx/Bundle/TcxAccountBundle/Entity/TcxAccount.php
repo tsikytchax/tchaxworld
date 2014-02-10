@@ -2,6 +2,7 @@
 
 namespace Tcx\Bundle\TcxAccountBundle\Entity;
 
+use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity
  */
-class TcxAccount
+class TcxAccount extends BaseUser
 {
     /**
      * @var integer
@@ -19,21 +20,21 @@ class TcxAccount
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="firstName", type="string", length=64)
      */
-    private $firstName;
+    protected $firstName;
 
     /**
      * @var string
      *
      * @ORM\Column(name="lastName", type="string", length=64)
      */
-    private $lastName;
+    protected $lastName;
 
     /**
      * @var \DateTime
@@ -41,13 +42,6 @@ class TcxAccount
      * @ORM\Column(name="birthday", type="datetimetz")
      */
     private $birthday;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=64)
-     */
-    private $email;
 
     /**
      * @var \DateTime
@@ -62,13 +56,6 @@ class TcxAccount
      * @ORM\Column(name="lastModificationDate", type="datetimetz")
      */
     private $lastModificationDate;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="tcxpwd", type="string", length=64)
-     */
-    private $tcxpwd;
 
 
     /**
@@ -151,29 +138,6 @@ class TcxAccount
     }
 
     /**
-     * Set email
-     *
-     * @param string $email
-     * @return TcxAccount
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string 
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
      * Set creationDate
      *
      * @param \DateTime $creationDate
@@ -219,28 +183,6 @@ class TcxAccount
         return $this->lastModificationDate;
     }
 
-    /**
-     * Set tcxpwd
-     *
-     * @param string $tcxpwd
-     * @return TcxAccount
-     */
-    public function setTcxpwd($tcxpwd)
-    {
-        $this->tcxpwd = $tcxpwd;
-
-        return $this;
-    }
-
-    /**
-     * Get tcxpwd
-     *
-     * @return string 
-     */
-    public function getTcxpwd()
-    {
-        return $this->tcxpwd;
-    }
     
     public function displayBirthday()
     {
@@ -255,4 +197,10 @@ class TcxAccount
     	return $this->lastModificationDate->format('Y-m-d H:i');
     }
     
+    public function __construct()
+    {
+    	parent::__construct();
+    	$this->lastModificationDate = new \DateTime();
+    	$this->creationDate = new \DateTime();
+    }
 }
