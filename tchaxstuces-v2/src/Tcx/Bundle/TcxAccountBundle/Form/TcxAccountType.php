@@ -17,11 +17,20 @@ class TcxAccountType extends AbstractType
         $builder
             ->add('firstName')
             ->add('lastName')
-            ->add('birthday')
-            ->add('email')
-            ->add('creationDate')
-            ->add('lastModificationDate')
-            ->add('tcxpwd')
+            ->add('username', 'text', array(
+        		'required' => true
+        	))
+            ->add('birthday', 'birthday', array(
+				'required' => true
+            ))
+            ->add('email', 'email', array(
+        		'required' => true,
+        	))
+            ->add('password', 'password', array(
+        		'required' => true,
+            	'max_length' => 16
+        	))
+            ->add('tcxAccountAvatar', 'file') 
         ;
     }
     

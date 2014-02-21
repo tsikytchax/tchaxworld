@@ -39,23 +39,30 @@ class TcxAccount extends BaseUser
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="birthday", type="datetimetz")
+     * @ORM\Column(name="birthday", type="date")
      */
-    private $birthday;
+    protected $birthday;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tcxAccountAvatar", type="string", length=128)
+     */
+    protected $tcxAccountAvatar;
+    
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="creationDate", type="datetimetz")
      */
-    private $creationDate;
+    protected $creationDate;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="lastModificationDate", type="datetimetz")
      */
-    private $lastModificationDate;
+    protected $lastModificationDate;
 
 
     /**
@@ -172,6 +179,15 @@ class TcxAccount extends BaseUser
 
         return $this;
     }
+    
+    public function getTcxAccountAvatar() {
+    	return $this->tcxAccountAvatar;
+    }
+
+    public function setTcxAccountAvatar($tcxAccountAvatar) {
+		$this->tcxAccountAvatar = $tcxAccountAvatar;
+		return $this->tcxAccountAvatar;
+	}
 
     /**
      * Get lastModificationDate
@@ -182,7 +198,6 @@ class TcxAccount extends BaseUser
     {
         return $this->lastModificationDate;
     }
-
     
     public function displayBirthday()
     {
@@ -200,6 +215,7 @@ class TcxAccount extends BaseUser
     public function __construct()
     {
     	parent::__construct();
+    	$this->birthday = null;
     	$this->lastModificationDate = new \DateTime();
     	$this->creationDate = new \DateTime();
     }

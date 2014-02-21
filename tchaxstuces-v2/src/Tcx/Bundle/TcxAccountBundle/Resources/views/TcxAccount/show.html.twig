@@ -10,15 +10,19 @@
                 <td>{{ entity.id }}</td>
             </tr>
             <tr>
-                <th>Firstname</th>
-                <td>{{ entity.firstName }}</td>
+                <th>Avatar</th>
+                <td><img src="{{ entity.tcxAccountAvatar }}"></td>
             </tr>
             <tr>
-                <th>Lastname</th>
+                <th>Nom</th>
                 <td>{{ entity.lastName }}</td>
             </tr>
             <tr>
-                <th>Birthday</th>
+                <th>Prénom</th>
+                <td>{{ entity.firstName }}</td>
+            </tr>
+            <tr>
+                <th>Date de naissance</th>
                 <td>{{ entity.birthday.format('Y-m-d H:i') }}</td>
             </tr>
             <tr>
@@ -26,16 +30,16 @@
                 <td>{{ entity.email }}</td>
             </tr>
             <tr>
-                <th>Creationdate</th>
+                <th>Date de création</th>
                 <td>{{ entity.creationDate.format('Y-m-d H:i') }}</td>
             </tr>
             <tr>
-                <th>Lastmodificationdate</th>
+                <th>Date de modification</th>
                 <td>{{ entity.lastModificationDate.format('Y-m-d H:i') }}</td>
             </tr>
             <tr>
-                <th>Tcxpwd</th>
-                <td>{{ entity.tcxpwd }}</td>
+                <th>Password</th>
+                <td>{{ entity.password }}</td>
             </tr>
         </tbody>
     </table>
