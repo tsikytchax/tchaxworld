@@ -47,6 +47,7 @@ class TcxAccountController extends Controller
         $entity = new TcxAccount();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
+        $entity->upload();
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();

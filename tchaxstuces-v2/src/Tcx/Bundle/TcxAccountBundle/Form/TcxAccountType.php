@@ -30,7 +30,7 @@ class TcxAccountType extends AbstractType
         		'required' => true,
             	'max_length' => 16
         	))
-            ->add('tcxAccountAvatar', 'file') 
+            ->add('tcxAccountAvatarFile', 'file') 
         ;
     }
     

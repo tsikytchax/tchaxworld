@@ -4,6 +4,8 @@ namespace Tcx\Bundle\TcxAccountBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * TcxAccount
@@ -49,6 +51,11 @@ class TcxAccount extends BaseUser
      * @ORM\Column(name="tcxAccountAvatar", type="string", length=128)
      */
     protected $tcxAccountAvatar;
+    
+	/**
+     * @Assert\File(maxSize="6000000")
+     */
+    public $tcxAccountAvatarFile;
     
     /**
      * @var \DateTime
@@ -211,6 +218,53 @@ class TcxAccount extends BaseUser
     {
     	return $this->lastModificationDate->format('Y-m-d H:i');
     }
+    
+    public function getAbsolutePath()
+    {
+    	return null === $this->tcxAccountAvatar ? null : $this->getUploadRootDir().'/'.$this->tcxAccountAvatar;
+    }
+    
+    public function getWebPath()
+    {
+    	return null === $this->tcxAccountAvatar ? null : $this->getUploadDir().'/'.$this->tcxAccountAvatar;
+    }
+    
+    protected function getUploadRootDir()
+    {
+    	// le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
+    	return __DIR__.'/../../../../../web/'.$this->getUploadDir();
+    }
+    
+    protected function getUploadDir()
+    {
+    	// on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
+    	// le document/image dans la vue.
+    	return 'uploads/avatars';
+    }
+    
+    public function upload()
+    {
+    	// la propriété « file » peut être vide si le champ n'est pas requis
+    	if (null === $this->tcxAccountAvatarFile) {
+    		return;
+    	}
+    
+    	// utilisez le nom de fichier original ici mais
+    	// vous devriez « l'assainir » pour au moins éviter
+    	// quelconques problèmes de sécurité
+    
+    	// la méthode « move » prend comme arguments le répertoire cible et
+    	// le nom de fichier cible où le fichier doit être déplacé
+    	$this->tcxAccountAvatarFile->move($this->getUploadRootDir(), $this->tcxAccountAvatarFile->getClientOriginalName());
+    
+    	// définit la propriété « path » comme étant le nom de fichier où vous
+    	// avez stocké le fichier
+    	$this->tcxAccountAvatar = $this->tcxAccountAvatarFile->getClientOriginalName();
+    
+    	// « nettoie » la propriété « file » comme vous n'en aurez plus besoin
+    	$this->tcxAccountAvatarFile = null;
+    }
+    
     
     public function __construct()
     {
