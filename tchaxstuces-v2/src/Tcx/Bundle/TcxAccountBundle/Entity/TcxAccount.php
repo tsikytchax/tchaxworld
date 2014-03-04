@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * TcxAccount
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Tcx\Bundle\TcxAccountBundle\Repository\TcxAccountRepository")
  */
 class TcxAccount extends BaseUser
 {

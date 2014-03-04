@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Tcx\Bundle\TcxAccountBundle\Entity\TcxAccount;
 use Tcx\Bundle\TcxAccountBundle\Form\TcxAccountType;
+use Tcx\Bundle\TcxAccountBundle\Repository\TcxAccountRepository as TcxAccountRepository;
 
 /**
  * TcxAccount controller.
@@ -27,12 +28,9 @@ class TcxAccountController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('TcxAccountBundle:TcxAccount')->findAll();
-
         return array(
-            'entities' => $entities,
-        );
+            'entities' => $this->get('tcxAccountServiceRepository')->findAll(),
+        );        
     }
     /**
      * On creation form submit :
@@ -60,9 +58,7 @@ class TcxAccountController extends Controller
 
         // Saves the entity in database and redirect to the show page
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
+        	$this->get('tcxAccountServiceRepository')->save($entity); 
             return $this->redirect($this->generateUrl('tcxaccount_show', array('id' => $entity->getId())));
         }
 
@@ -118,10 +114,7 @@ class TcxAccountController extends Controller
      */
     public function showAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('TcxAccountBundle:TcxAccount')->find($id);
-
+        $entity = $this->get('tcxAccountServiceRepository')->find($id);
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find TcxAccount entity.');
         }
@@ -143,8 +136,7 @@ class TcxAccountController extends Controller
      */
     public function editAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('TcxAccountBundle:TcxAccount')->find($id);
+        $entity = $this->get('tcxAccountServiceRepository')->find($id);
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find TcxAccount entity.');
         }
@@ -190,8 +182,7 @@ class TcxAccountController extends Controller
     public function updateAction(Request $request, $id)
     {
     	// Retrieves the account information to display
-        $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('TcxAccountBundle:TcxAccount')->find($id);
+        $entity = $this->get('tcxAccountServiceRepository')->find($id);
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find TcxAccount entity.');
         }
@@ -203,8 +194,7 @@ class TcxAccountController extends Controller
         // Handles submit action
         $editForm->handleRequest($request);
         if ($editForm->isValid()) {
-        	$em->persist($entity);
-            $em->flush();
+        	$this->get('tcxAccountServiceRepository')->save($entity);
             return $this->redirect($this->generateUrl('tcxaccount', array()));
         }
 
@@ -228,14 +218,12 @@ class TcxAccountController extends Controller
         // Handles delete action if the form is valid
         $form->handleRequest($request);
         if ($form->isValid()) {
-        	// Retrieves the account to delete
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('TcxAccountBundle:TcxAccount')->find($id);
+        	// Retrieves the account to delete	
+        	$entity = $this->get('tcxAccountServiceRepository')->find($id);
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find TcxAccount entity.');
             }
-            $em->remove($entity);
-            $em->flush();
+            $this->get('tcxAccountServiceRepository')->delete($entity);
         }
 
         return $this->redirect($this->generateUrl('tcxaccount'));
