@@ -7,14 +7,11 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Prénom</th>
-                <th>Nom</th>
-                <th>Date de naissance</th>
+                <th>Avatar</th>
                 <th>Pseudonyme</th>
                 <th>Email</th>
                 <th>Date de création</th>
                 <th>Date de dernière modification</th>
-                <th>Mot de passe</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -22,14 +19,11 @@
         {% for entity in entities %}
             <tr>
                 <td><a href="{{ path('tcxaccount_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.getFirstName() }}</td>
-                <td>{{ entity.getLastName() }}</td>
-                <td>{{ entity.getBirthday()| date('d-m-Y') }}</td>
+                <td><img src="{{ asset('uploads/avatars/' ~ entity.getTcxAccountAvatar()) }}" style="width:60px;"></td>
                 <td>{{ entity.username }}</td>
                 <td>{{ entity.getEmail }}</td>
                 <td>{{ entity.getCreationDate()| date('Y-m-d H:i') }}</td>
                 <td>{{ entity.getLastModificationDate()| date('Y-m-d H:i') }}</td>
-                <td>{{ entity.getPassword() }}</td>
                 <td>
                 <ul>
                     <li>

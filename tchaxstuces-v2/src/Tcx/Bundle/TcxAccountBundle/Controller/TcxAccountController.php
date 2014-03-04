@@ -28,7 +28,6 @@ class TcxAccountController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
         $entities = $em->getRepository('TcxAccountBundle:TcxAccount')->findAll();
 
         return array(
@@ -36,7 +35,9 @@ class TcxAccountController extends Controller
         );
     }
     /**
-     * Creates a new TcxAccount entity.
+     * On creation form submit :
+     *   - creates a new TcxAccount entity.
+     *   - uploads the picture profile
      *
      * @Route("/", name="tcxaccount_new")
      * @Method("POST")
@@ -44,16 +45,24 @@ class TcxAccountController extends Controller
      */
     public function createAction(Request $request)
     {
+    	// Inits the entity
         $entity = new TcxAccount();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
+
+        // Manages the user picture
+        $tcxAvatar = $entity->getTcxAccountAvatar();
+        // Manages case for empty file
+        if (empty($tcxAvatar)) {
+        	$entity->setTcxAccountAvatar($this->container->getParameter("avatar_default_path"));
+        }
         $entity->upload();
 
+        // Saves the entity in database and redirect to the show page
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
-
             return $this->redirect($this->generateUrl('tcxaccount_show', array('id' => $entity->getId())));
         }
 
@@ -135,13 +144,12 @@ class TcxAccountController extends Controller
     public function editAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('TcxAccountBundle:TcxAccount')->find($id);
-
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find TcxAccount entity.');
         }
 
+        // Creates the edit and delete forms
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
@@ -170,8 +178,10 @@ class TcxAccountController extends Controller
 
         return $form;
     }
+    
     /**
-     * Edits an existing TcxAccount entity.
+     * Displays 2 forms to edit an existing TcxAccount entity and 
+     * Manages the submit action.
      *
      * @Route("/{id}", name="tcxaccount_update")
      * @Method("PUT")
@@ -179,22 +189,23 @@ class TcxAccountController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
+    	// Retrieves the account information to display
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('TcxAccountBundle:TcxAccount')->find($id);
-
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find TcxAccount entity.');
         }
-
+		
+        // Creates delete and edit form
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
+
+        // Handles submit action
         $editForm->handleRequest($request);
-
         if ($editForm->isValid()) {
+        	$em->persist($entity);
             $em->flush();
-
-            return $this->redirect($this->generateUrl('tcxaccount_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('tcxaccount', array()));
         }
 
         return array(
@@ -203,8 +214,9 @@ class TcxAccountController extends Controller
             'delete_form' => $deleteForm->createView(),
         );
     }
+    
     /**
-     * Deletes a TcxAccount entity.
+     * Displays a delete form and manages the submit action
      *
      * @Route("/{id}", name="tcxaccount_delete")
      * @Method("DELETE")
@@ -212,16 +224,16 @@ class TcxAccountController extends Controller
     public function deleteAction(Request $request, $id)
     {
         $form = $this->createDeleteForm($id);
+        
+        // Handles delete action if the form is valid
         $form->handleRequest($request);
-
         if ($form->isValid()) {
+        	// Retrieves the account to delete
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('TcxAccountBundle:TcxAccount')->find($id);
-
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find TcxAccount entity.');
             }
-
             $em->remove($entity);
             $em->flush();
         }

@@ -15,8 +15,12 @@ class TcxAccountType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName')
-            ->add('lastName')
+            ->add('firstName', 'text', array(
+        		'required' => false
+        	))
+            ->add('lastName', 'text', array(
+        		'required' => false
+        	))
             ->add('username', 'text', array(
         		'required' => true
         	))
@@ -30,7 +34,9 @@ class TcxAccountType extends AbstractType
         		'required' => true,
             	'max_length' => 16
         	))
-            ->add('tcxAccountAvatarFile', 'file') 
+            ->add('tcxAccountAvatarFile', 'file', array(
+        		'required' => false
+        	)) 
         ;
     }
     

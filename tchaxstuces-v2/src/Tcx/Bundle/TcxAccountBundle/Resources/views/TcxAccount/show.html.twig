@@ -11,7 +11,7 @@
             </tr>
             <tr>
                 <th>Avatar</th>
-                <td><img src="{{ asset('uploads/avatars/' ~ entity.tcxAccountAvatar) }}"></td>
+                <td><img src="{{ asset('uploads/avatars/' ~ entity.tcxAccountAvatar) }}" style="width:60px;"></td>
             </tr>
             <tr>
                 <th>Nom</th>
@@ -23,7 +23,7 @@
             </tr>
             <tr>
                 <th>Date de naissance</th>
-                <td>{{ entity.birthday.format('Y-m-d H:i') }}</td>
+                <td>{{ entity.birthday.format('d-m-Y') }}</td>
             </tr>
             <tr>
                 <th>Email</th>
@@ -31,11 +31,11 @@
             </tr>
             <tr>
                 <th>Date de création</th>
-                <td>{{ entity.creationDate.format('Y-m-d H:i') }}</td>
+                <td>{{ entity.creationDate.format('d-m-Y à H:i:s') }}</td>
             </tr>
             <tr>
                 <th>Date de modification</th>
-                <td>{{ entity.lastModificationDate.format('Y-m-d H:i') }}</td>
+                <td>{{ entity.lastModificationDate.format('d-m-Y à H:i:s') }}</td>
             </tr>
             <tr>
                 <th>Password</th>
