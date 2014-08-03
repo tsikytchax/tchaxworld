@@ -1,8 +1,0 @@
-tcx_account_accountpage:
-    pattern:  /tcxaccount
-    defaults: { _controller: tcxAccountServiceController:indexAction }
-
-tcx_account_homepage:
-    pattern: /
-    defaults : { _controller: tcxAccountServiceController:indexAction}
-    
